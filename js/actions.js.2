@@ -1,0 +1,200 @@
+
+$(document).ready(function(){
+	 //newRow();
+	 //myFunction();
+	addCellule();
+ 
+});
+
+
+
+//628 46 00 62 
+
+
+function addCellule(){
+	
+	var nbTh= $("table thead tr:first >th ").length ;
+	var h=$($("table tbody tr")[0]).height();
+	
+	var baliseSvg='<svg height="'+h+'"  width="'+h+'">';
+	var butomCercle =(baliseSvg
+					+'<circle cx="'+h/2+'" cy="'+h/2+'" r="8" stroke="black" stroke-width="0" fill="black" />'
+					+'</svg>');
+	
+	var butomCarre =(baliseSvg
+					+'<rect  width="'+h+'" height="'+h+'" rgb(128, 128, 128)" />'
+					+'</svg>');
+	var butomLine = ('<svg height="'+h+'"  width="'+h+'" xmlns="http://www.w3.org/2000/svg">'	
+					+' <line x1="20" y1="100" x2="100" y2="100" stroke-width="2" stroke="black"/></svg>');
+var tab  = {cercle: butomCercle, carre: butomCarre , line:butomCercle};
+
+	$("#beautifyme tbody tr ").each(function(){
+		  $(this,"td:last").append(cellule(butomCercle,"cercle" ));
+		  $(this,"td:last").append(cellule(butomCarre,"carre" ));
+		  $(this,"td:last").append(cellule(butomLine,"line" ));
+	
+	});
+		for(var k in tab){
+		$('<tr/><td/><td class="'+k+'">'+tab[k]+'</td><td class="'+k+'">'+tab[k]+'</td><td class="'+k+'">'+tab[k]+'</td><td/>').insertBefore('table > thead > tr:first');
+	}
+	
+}
+
+
+function newRowsss(){
+	var tab = [ " ","hello", "world","test","VI" ];
+	var table=$("table thead");
+
+	var col;
+	
+	for(i=0; i<4; i++){
+	var row = $('<tr/>');
+		table.append(row);
+		for(j=1; j<tab.length; j++){
+	
+			cols = $('<th classe="cercle"/>');
+			cols.append(tab[i]);
+			row.append(cols);
+
+		}
+	   table.append(row);
+	
+	}
+}
+
+function myFunction() {
+var tab  = {cercle: "To_cerc", carre: "To_rec", line:"line_"};
+	for(var k in tab){
+		$('<tr/><td/><td class="'+k+'">'+tab[k]+'</td><td class="'+k+'">'+tab[k]+'</td><td class="'+k+'">'+tab[k]+'</td><td/>').insertBefore('table > thead > tr:first');
+	}
+}
+
+
+function cellule(figure, classe){
+	var fig=('<td class="'+classe+'">'+figure+'</td>') ;
+   	return fig;
+}
+	
+function update_dim(){
+	var border =  parseInt($($("#tableau")[0]).attr("border"));
+	var tab_w = [];
+	var tab_h = [];
+	var tab_h_thead;
+	tab_h_thead = $($("#tableau thead th")[0]).height()+border;
+	$("#tableau tbody tr:first td").each(function(){
+		tab_w.push($(this).width()+border);
+		tab_h.push($(this).height()+border);
+	});
+	$("#tab_options_hor tr").each(function(){
+		$("td",$(this)).each(function(){
+			var i = $("td", $(this).parent()).index($(this));
+			$(this).attr("width",tab_w[i]);
+		});
+	});
+	$("#tab_options_ver thead tr").attr("height",tab_h_thead);
+	$("#tab_options_ver tr").each(function(){
+		$(this).attr("height",tab_h_thead);
+	});
+	
+}
+
+function click_options(){
+	$("#tab_options_hor .cercle").click("live",function(){
+		var i = $("td",$($(this).parents("tr")[0])).index($($(this).parents("td")[0]));
+		var min = Number.MAX_VALUE;
+		var max = Number.MIN_VALUE;
+		$("#tableau tbody tr").each(function(){
+			var me = parseFloat($($("td span",$(this))[i]).text());
+			if(me > max) max = me;
+			if(me < min) min = me;
+		});
+		$("#tableau tbody tr").each(function(){
+			var me = $($("td",$(this))[i]);
+			me.addClass("position");
+			me.attr("width",me.width());
+			me.attr("height",me.height());
+			var rayon = me.height()*((parseFloat($('span',me).text())-min)/(max-min));
+			if(rayon<=0) rayon = 4;
+			me.addClass("hide");
+			me.append('<div class="position" ><svg height="'+me.height()+'" width="'+me.width()+'"><circle cx="'+me.width()/2+'" cy="'+me.height()/2+'" r="'+rayon/2+'" stroke="black" stroke-width="0" fill="red" /></svg></div>');
+		});
+	});
+}
+
+
+//carree
+function click_options_(){
+	$("#tab_options_hor .carre").click("live",function(){
+		var i = $("td",$($(this).parents("tr")[0])).index($($(this).parents("td")[0]));
+		var min = Number.MAX_VALUE;
+		var max = Number.MIN_VALUE;
+		$("#tableau tbody tr").each(function(){
+			var me = parseFloat($($("td span",$(this))[i]).text());
+			if(me > max) max = me;
+			if(me < min) min = me;
+		});
+		$("#tableau tbody tr").each(function(){
+			var me = $($("td",$(this))[i]);
+			me.addClass("position");
+			me.attr("width",me.width());
+			me.attr("height",me.height());
+			var rayon = me.height()*((parseFloat($('span',me).text())-min)/(max-min));
+			if(rayon<=0) rayon = 4;
+			me.addClass("hide");
+			me.append('<div class="position" ><svg height="'+me.height()+'" width="'+me.width()+'"><rect x="'+me.width()/2+'" y="'+me.height()/2+'" width="'+rayon/2+'" height="'+rayon/2+'" style="fill:rgb(0,0,255);stroke-width:0;stroke:rgb(0,0,0)" /></svg></div>');
+		});
+		
+	});
+}
+
+
+function click_options_tri(){
+	$("#tab_options_hor .triangle").click("live",function(){
+		var i = $("td",$($(this).parents("tr")[0])).index($($(this).parents("td")[0]));
+		var min = Number.MAX_VALUE;
+		var max = Number.MIN_VALUE;
+		$("#tableau tbody tr").each(function(){
+			var me = parseFloat($($("td span",$(this))[i]).text());
+			if(me > max) max = me;
+			if(me < min) min = me;
+		});
+		$("#tableau tbody tr").each(function(){
+			var me = $($("td",$(this))[i]);
+			me.addClass("position");
+			me.attr("width",me.width());
+			me.attr("height",me.height());
+			var rayon = me.height()*((parseFloat($('span',me).text())-min)/(max-min));
+			if(rayon<=0) rayon = 4;
+			me.addClass("hide");
+			me.append('<div class="position" ><svg  height="'+me.height()+'" width="'+me.width()+'"> <rect x="'+me.width()/2+'" y="'+me.height()/2+'" width="'+rayon/2+'" height="'+rayon/2+'" style="stroke: #ff00ff; fill: none;" >  <animateTransform  attributeName="transform" type="scale" from="1 1" to="2 3" begin="0s" dur="8s" repeatCount="indefinite" /></rect></svg></div>');
+		});
+		
+	});
+}
+
+
+$(document).ready(function() {
+
+    $("table").tableDnD();
+    // $("#tableau").dragtable();
+});
+
+/*
+
+$(document).ready(function(){
+    $(".up,.down").click(function(){
+                var row = $(this).parents("tr:first");
+                 console.log(row);
+                if ($(this).is(".up")) {
+                    row.insertBefore(row.prev());
+                } else {
+                    row.insertAfter(row.next());
+                }
+    });
+});
+ */
+ 
+
+
+ 
+ 

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>test simple reordenancement liste de vecteur</title>
+
+<script src="../../lib/science.v1.js"></script>
+<script src="../../reorder.v1.js"></script>
+<script src="jquery-2.0.3.js"></script>
+
+
+
+<h1>test simple reordenancement liste de vecteur</h1>
+
+<div id='avant'>avant:</div>
+<div id='apres'>apres:</div>
+
+<script src="../matrix.js"></script>
+<script>
+  // uneliste de 5 elements/vecteurs a trier
+  mat = [[18.5, 3, 1], [1, 3, 2], [1, 2, 2], [8, 2, 5], [12, 3, 2]];
+
+  // on affiche la liste de vecteur avant le tri
+  for (i in mat){
+    $('#avant').append(' <span style="border:1px solid black">'+mat[i]+'</span>');
+  }
+
+  // c'est cette ligne qui fait le tri des vecteurs
+  // reorder est un objet definit dans la lib reorder.v1.js
+  // on appelle dessus deux fonctions chainables (leafOrder et distance)
+  // sur lesquelles on applique notre liste de vecteurs a trier
+  var leafOrder = reorder.leafOrder().distance(science.stats.distance.manhattan)(mat);
+  // leaforder renvoye est un tableau d'indexs qui nous dit dans quel ordre on devrait reclasser les vecteurs de notre liste
+
+  // on affiche la liste de vecteur apres le tri
+  for (i in leafOrder){
+    $('#apres').append(' <span style="border:1px solid black">'+mat[leafOrder[i]]+'</span>');
+  }
+
+</script>
+
